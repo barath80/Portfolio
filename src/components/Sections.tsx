@@ -2,6 +2,7 @@
 
 import { achievements, competitive, experience, profile, projects, skills } from "@/lib/data";
 import { Arrow, Reveal, SectionHead } from "./ui";
+import Viz from "./Viz";
 
 export function About() {
   const loop = skills.flatMap((s) => s.items);
@@ -11,7 +12,7 @@ export function About() {
         <div className="marquee mono text-sm text-mute">
           {[...loop, ...loop].map((s, i) => (
             <span key={i} className="mx-5 whitespace-nowrap">
-              <span className="mr-5 text-accent">✦</span>
+              <span className="mr-5 inline-block h-1.5 w-1.5 bg-accent align-middle" />
               {s}
             </span>
           ))}
@@ -97,23 +98,30 @@ export function ProjectsSection() {
           {projects.map((p) => (
             <Reveal key={p.id}>
               <article className="group relative overflow-hidden rounded-3xl border border-line bg-card p-5 transition hover:border-accent sm:p-8 md:p-10">
-                <span className="mono pointer-events-none absolute right-5 top-3 text-6xl font-extrabold text-line transition group-hover:text-accent/40 md:text-8xl">
+                <span className="mono pointer-events-none absolute right-5 top-3 text-6xl font-extrabold text-line transition group-hover:text-accent/40 md:text-8xl lg:hidden">
                   {p.id}
                 </span>
-                <div className="relative">
-                  <h3 className="pr-16 text-3xl font-extrabold tracking-tight md:text-5xl">{p.name}</h3>
-                  <p className="mt-2 text-base text-mute md:text-lg">{p.tagline}</p>
-
-                  <div className="mt-7 grid grid-cols-3 gap-2 sm:gap-4">
-                    {p.headline.map((h) => (
-                      <div key={h.label} className="rounded-xl border border-line bg-bg p-3 sm:p-4">
-                        <p className="break-words text-xl font-extrabold leading-none text-accent sm:text-3xl md:text-4xl">{h.value}</p>
-                        <p className="label mt-2 !text-[.62rem] !tracking-[.05em] sm:!text-[.7rem]">{h.label}</p>
-                      </div>
-                    ))}
+                {/* stacked on phones/tablets; text left + diagram right from lg */}
+                <div className="relative lg:grid lg:grid-cols-12 lg:gap-x-12">
+                  <div className="lg:col-span-7">
+                    <p className="label mb-3 hidden lg:block"><span className="text-accent">/{p.id}</span> &nbsp;Project</p>
+                    <h3 className="pr-16 text-3xl font-extrabold tracking-tight md:text-5xl">{p.name}</h3>
+                    <p className="mt-2 text-base text-mute md:text-lg">{p.tagline}</p>
                   </div>
 
-                  <ul className="mt-7 space-y-3">
+                  <div className="lg:col-start-8 lg:col-span-5 lg:row-span-3 lg:row-start-1 lg:pt-4">
+                    <Viz id={p.id} />
+                    <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
+                      {p.headline.map((h) => (
+                        <div key={h.label} className="min-w-0 rounded-xl border border-line bg-bg p-3 sm:p-4">
+                          <p className="whitespace-nowrap text-[1.05rem] font-extrabold leading-none text-accent min-[380px]:text-xl sm:text-3xl lg:text-2xl">{h.value}</p>
+                          <p className="label mt-2 !text-[.62rem] !tracking-[.05em] sm:!text-[.7rem]">{h.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <ul className="mt-7 space-y-3 lg:col-span-7">
                     {p.points.map((pt) => (
                       <li key={pt} className="flex gap-3 leading-relaxed">
                         <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -122,15 +130,16 @@ export function ProjectsSection() {
                     ))}
                   </ul>
 
-                  <div className="mt-7 flex flex-wrap gap-2">
-                    {p.stack.map((s) => (
-                      <span key={s} className="chip">{s}</span>
-                    ))}
+                  <div className="lg:col-span-7">
+                    <div className="mt-7 flex flex-wrap gap-2">
+                      {p.stack.map((s) => (
+                        <span key={s} className="chip">{s}</span>
+                      ))}
+                    </div>
+                    <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn btn-ghost mt-8 w-full sm:w-auto" aria-label={`${p.name} on GitHub`}>
+                      View on GitHub <Arrow />
+                    </a>
                   </div>
-
-                  <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn btn-ghost mt-8 w-full sm:w-auto" aria-label={`${p.name} on GitHub`}>
-                    View on GitHub <Arrow />
-                  </a>
                 </div>
               </article>
             </Reveal>

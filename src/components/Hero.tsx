@@ -88,7 +88,7 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mono mb-6 inline-flex items-center gap-2.5 rounded-full border border-line bg-card px-3.5 py-2 text-xs"
+          className="mono mb-12 flex w-fit max-w-full items-center gap-2.5 rounded-xl border border-line bg-card px-3.5 py-2 text-xs sm:mb-14"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
@@ -124,21 +124,22 @@ export default function Hero() {
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-10 max-w-2xl">
           <p className="text-xl font-medium leading-snug sm:text-2xl md:text-3xl">
-            I build{" "}
-            <span className="relative inline-block h-[1.2em] w-[9.5ch] overflow-hidden align-bottom sm:w-[11ch]">
-              <AnimatePresence mode="wait">
+            I build
+            {/* all roles share one grid cell so the line never jumps; own line avoids a gap on phones */}
+            <span className="grid text-4xl leading-[1.15] sm:text-5xl md:text-6xl">
+              {profile.roles.map((r, i) => (
                 <motion.span
-                  key={role}
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-100%" }}
+                  key={r}
+                  aria-hidden={i !== role}
+                  initial={false}
+                  animate={{ opacity: i === role ? 1 : 0, y: i === role ? 0 : 10 }}
                   transition={{ duration: 0.35 }}
-                  className="absolute left-0 whitespace-nowrap font-extrabold text-accent"
+                  className="col-start-1 row-start-1 whitespace-nowrap font-extrabold text-accent"
                 >
-                  {profile.roles[role]}
+                  {r}
                 </motion.span>
-              </AnimatePresence>
-            </span>{" "}
+              ))}
+            </span>
             systems that hold up past the demo.
           </p>
           <p className="mt-4 text-base text-mute md:text-lg">

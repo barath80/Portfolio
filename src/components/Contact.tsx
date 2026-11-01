@@ -74,7 +74,7 @@ export default function Contact() {
                 </li>
               ))}
             </ul>
-            <p className="mono mt-5 text-xs text-mute">📍 {profile.location}</p>
+            <p className="mono mt-5 text-xs text-mute">Based in {profile.location}</p>
             <a href={profile.resume} download className="btn btn-solid mt-6 w-full sm:w-auto">
               Download resume (PDF) <Arrow />
             </a>
@@ -106,7 +106,7 @@ export default function Contact() {
                 {status === "sending" ? "Sending…" : "Send message"} <Arrow />
               </button>
               <p role="status" aria-live="polite" className="min-h-6 text-sm">
-                {status === "sent" && <span className="font-semibold text-accent">✓ Sent — it&apos;s in my inbox. I&apos;ll reply soon.</span>}
+                {status === "sent" && <span className="font-semibold text-accent">Sent. It&apos;s in my inbox and I&apos;ll reply soon.</span>}
                 {status === "error" && (
                   <span className="text-mute">
                     Couldn&apos;t send right now. Please email{" "}

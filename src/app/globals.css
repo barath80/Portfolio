@@ -35,13 +35,26 @@
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+* { -webkit-tap-highlight-color: transparent; }
+/* notched iOS / Android cutouts: keep content inside the safe area */
+.wrap {
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .wrap { padding-left: max(2.5rem, env(safe-area-inset-left)); padding-right: max(2.5rem, env(safe-area-inset-right)); }
+}
+footer { padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
+/* 16px minimum stops iOS Safari zooming on focus */
+input, textarea { font: inherit; font-size: 16px; }
+button { cursor: pointer; }
 body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
