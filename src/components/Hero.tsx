@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/lib/data";
+import Scene3D from "./Scene3D";
 
 const stats = [
   { v: 3, s: "", l: "internships" },
@@ -101,11 +102,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(3rem,13vw,9.5rem)] font-extrabold leading-[0.88] tracking-[-0.045em]"
+            className="text-[clamp(3rem,13vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.045em]"
           >
             Sunkireddy
             <br />
-            <span className="text-accent">Barath</span>
+            <span className="grad-text">Barath</span>
           </motion.h1>
           {/* static detection frame around the name */}
           <motion.div
@@ -131,8 +132,8 @@ export default function Hero() {
                   key={role}
                   initial={{ y: "70%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: "-70%", opacity: 0 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  exit={{ y: "-70%", opacity: 0, transition: { duration: 0.14 } }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="absolute inset-x-0 top-0 whitespace-nowrap font-extrabold text-accent"
                 >
                   {profile.roles[role]}
@@ -154,6 +155,8 @@ export default function Hero() {
           <a href="#projects" className="btn btn-ghost">See my work</a>
           <a href="#contact" className="btn btn-ghost">Hire me</a>
         </motion.div>
+
+        <Scene3D className="relative mx-auto mt-12 h-[300px] w-full max-w-sm xl:absolute xl:right-0 xl:top-16 xl:mt-0 xl:h-[500px] xl:w-[420px] xl:max-w-none" />
 
         <dl className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-4">
           {stats.map((s) => (

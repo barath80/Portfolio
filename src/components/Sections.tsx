@@ -1,13 +1,16 @@
 "use client";
 
 import { achievements, competitive, experience, profile, projects, skills } from "@/lib/data";
-import { Arrow, Reveal, SectionHead } from "./ui";
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { Arrow, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
 import Viz from "./Viz";
 
 export function About() {
   const loop = skills.flatMap((s) => s.items);
   return (
     <section id="about" className="section pt-10 md:pt-20">
+      <FloatShape kind="gyro" size={110} className="right-3 top-40 !opacity-40 sm:right-[7%] sm:!opacity-70 md:top-48" />
       <div className="mb-14 overflow-hidden border-y border-line py-4" aria-hidden>
         <div className="marquee mono text-sm text-mute">
           {[...loop, ...loop].map((s, i) => (
@@ -33,18 +36,18 @@ export function About() {
             </p>
           </Reveal>
           <Reveal delay={0.1} className="md:col-span-2">
-            <div className="rounded-2xl border border-line bg-card p-6">
+            <Tilt max={7} className="rounded-2xl"><div className="rounded-2xl border border-line bg-card p-6">
               <p className="label mb-4">Education</p>
               <p className="text-xl font-bold leading-snug">{profile.education.school}</p>
               <p className="mt-1 text-mute">{profile.education.degree}</p>
               <div className="mt-6 flex items-end justify-between border-t border-line pt-5">
                 <span className="mono text-sm text-mute">{profile.education.years}</span>
                 <span className="text-right">
-                  <span className="block text-4xl font-extrabold text-accent">8.78</span>
+                  <span className="grad-text block text-4xl font-extrabold">8.78</span>
                   <span className="label">CGPA / 10</span>
                 </span>
               </div>
-            </div>
+            </div></Tilt>
           </Reveal>
         </div>
       </div>
@@ -53,15 +56,20 @@ export function About() {
 }
 
 export function ExperienceSection() {
+  const list = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: list, offset: ["start 75%", "end 55%"] });
+  const grow = useSpring(scrollYProgress, { stiffness: 90, damping: 22 });
   return (
     <section id="experience" className="section">
+      <FloatShape kind="cube" size={84} className="right-4 top-24 !opacity-40 sm:right-[9%] sm:!opacity-70 md:top-32" />
       <div className="wrap">
         <SectionHead index="02" kicker="Experience" title="Where I've shipped." />
-        <ol className="relative border-l border-line pl-6 md:pl-10">
+        <ol ref={list} className="relative border-l border-line pl-6 md:pl-10">
+          <motion.span aria-hidden style={{ scaleY: grow }} className="absolute -left-px top-0 h-full w-0.5 origin-top bg-gradient-to-b from-accent to-accent2" />
           {experience.map((e, i) => (
             <li key={e.company} className="relative pb-12 last:pb-0">
-              <span className="absolute -left-[31px] top-2 h-3 w-3 rounded-full border-2 border-accent bg-bg md:-left-[47px]" />
-              <Reveal delay={i * 0.05}>
+              <span className="absolute -left-[31px] top-2 h-3 w-3 rounded-full border-2 border-accent bg-bg shadow-[0_0_14px_var(--accent)] md:-left-[47px]" />
+              <Reveal delay={i * 0.05} x={i % 2 ? 40 : -40}>
                 <div className="rounded-2xl border border-line bg-card p-5 transition hover:border-accent md:p-8">
                   <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
                     <h3 className="text-2xl font-extrabold tracking-tight md:text-3xl">{e.company}</h3>
@@ -92,11 +100,13 @@ export function ExperienceSection() {
 export function ProjectsSection() {
   return (
     <section id="projects" className="section band">
+      <FloatShape kind="cube" size={96} className="left-[-18px] top-20 !opacity-40 sm:left-[4%] sm:!opacity-70 md:top-28" />
       <div className="wrap">
         <SectionHead index="03" kicker="Selected work" title="Projects with receipts." />
         <div className="space-y-6">
           {projects.map((p) => (
             <Reveal key={p.id}>
+              <Tilt max={2.5} className="rounded-3xl">
               <article className="group relative overflow-hidden rounded-3xl border border-line bg-card p-5 transition hover:border-accent sm:p-8 md:p-10">
                 <span className="mono pointer-events-none absolute right-5 top-3 text-6xl font-extrabold text-line transition group-hover:text-accent/40 md:text-8xl lg:hidden">
                   {p.id}
@@ -142,6 +152,7 @@ export function ProjectsSection() {
                   </div>
                 </div>
               </article>
+              </Tilt>
             </Reveal>
           ))}
         </div>
@@ -153,6 +164,7 @@ export function ProjectsSection() {
 export function SkillsSection() {
   return (
     <section id="skills" className="section">
+      <FloatShape kind="gyro" size={120} className="right-2 top-28 !opacity-40 sm:right-[6%] sm:!opacity-70 md:top-36" />
       <div className="wrap">
         <SectionHead index="04" kicker="Toolkit" title="Stack & problem-solving." />
         <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
@@ -172,6 +184,7 @@ export function SkillsSection() {
         <div className="grid gap-4 md:grid-cols-3">
           {competitive.map((c) => (
             <Reveal key={c.platform}>
+              <Tilt max={9} className="h-full rounded-2xl">
               <a
                 href={c.url}
                 target="_blank"
@@ -183,10 +196,11 @@ export function SkillsSection() {
                   <Arrow className="text-mute transition group-hover:text-accent" />
                 </div>
                 <p className="mono text-xs text-mute">@{c.handle}</p>
-                <p className="mt-5 text-6xl font-extrabold tracking-tighter text-accent">{c.big}</p>
+                <p className="grad-text mt-5 text-6xl font-extrabold tracking-tighter">{c.big}</p>
                 <p className="label mb-4">{c.bigLabel}</p>
                 <p className="mt-auto text-sm leading-relaxed text-mute">{c.text}</p>
               </a>
+              </Tilt>
             </Reveal>
           ))}
         </div>
@@ -198,12 +212,13 @@ export function SkillsSection() {
 export function AchievementsSection() {
   return (
     <section id="achievements" className="section band">
+      <FloatShape kind="cube" size={88} className="right-3 top-24 !opacity-40 sm:right-[8%] sm:!opacity-70 md:top-32" />
       <div className="wrap">
         <SectionHead index="05" kicker="Achievements" title="Built under the clock." />
         <div className="divide-y divide-line border-y border-line">
           {achievements.map((a) => (
             <Reveal key={a.title}>
-              <div className="grid gap-2 py-6 md:grid-cols-12 md:items-center md:gap-6 md:py-8">
+              <div className="grid gap-2 px-2 py-6 transition duration-300 hover:bg-card/70 md:grid-cols-12 md:items-center md:gap-6 md:px-4 md:py-8 md:hover:translate-x-2">
                 <span className="mono text-xs text-mute md:col-span-2">{a.date}</span>
                 <div className="md:col-span-6">
                   <h3 className="text-xl font-extrabold tracking-tight md:text-2xl">{a.title}</h3>

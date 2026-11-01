@@ -2,24 +2,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #f3efe6;
-  --bg-2: #eae5d9;
-  --card: #fbf9f4;
-  --ink: #15140f;
-  --mute: #5f5b50;
-  --line: #d6d0c1;
-  --accent: #ff4b1f;
+  --bg: #f5f2fc;
+  --bg-2: #ebe6f8;
+  --card: #ffffff;
+  --ink: #170f33;
+  --mute: #5e5780;
+  --line: #d9d1f0;
+  --accent: #7c3aed;
+  --accent-2: #c026d3;
   --accent-ink: #ffffff;
 }
 .dark {
-  --bg: #0c0c0b;
-  --bg-2: #141413;
-  --card: #121211;
-  --ink: #ecebe3;
-  --mute: #98968a;
-  --line: #262623;
-  --accent: #c8ff3a;
-  --accent-ink: #0c0c0b;
+  --bg: #08050f;
+  --bg-2: #0f0a1d;
+  --card: #120c24;
+  --ink: #efeaff;
+  --mute: #a398c6;
+  --line: #2a2048;
+  --accent: #a07bff;
+  --accent-2: #e879f9;
+  --accent-ink: #0a0615;
 }
 
 @theme inline {
@@ -30,6 +32,7 @@
   --color-mute: var(--mute);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent2: var(--accent-2);
   --color-accent-ink: var(--accent-ink);
   --font-display: var(--font-display), ui-sans-serif, system-ui;
   --font-mono: var(--font-mono), ui-monospace, monospace;
@@ -37,17 +40,7 @@
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 * { -webkit-tap-highlight-color: transparent; }
-/* notched iOS / Android cutouts: keep content inside the safe area */
-.wrap {
-  padding-left: max(1.25rem, env(safe-area-inset-left));
-  padding-right: max(1.25rem, env(safe-area-inset-right));
-}
-@media (min-width: 768px) {
-  .wrap { padding-left: max(2.5rem, env(safe-area-inset-left)); padding-right: max(2.5rem, env(safe-area-inset-right)); }
-}
-footer { padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
-/* 16px minimum stops iOS Safari zooming on focus */
-input, textarea { font: inherit; font-size: 16px; }
+input, textarea { font: inherit; font-size: 16px; } /* 16px stops iOS Safari zooming on focus */
 button { cursor: pointer; }
 body {
   background: var(--bg);
@@ -58,7 +51,7 @@ body {
 }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
-/* film grain + grid give the page texture instead of a flat fill */
+/* layer 1: faint engineering grid, fades out away from the top */
 body::before {
   content: "";
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -66,59 +59,94 @@ body::before {
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 64px 64px;
-  opacity: .35;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  opacity: .4;
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 25%, transparent 75%);
 }
-
-/* ambient colour field: warm light / deep-lime dark. fixed layer, so it is cheap and iOS-safe */
+/* layer 2: colour field. fixed, so it is cheap and iOS-safe */
 body::after {
   content: "";
   position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background:
-    radial-gradient(60rem 38rem at 8% -8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%),
-    radial-gradient(48rem 34rem at 100% 38%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 65%),
-    radial-gradient(52rem 36rem at -6% 100%, color-mix(in srgb, var(--ink) 7%, transparent), transparent 65%);
+    radial-gradient(62rem 40rem at 6% -10%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 62%),
+    radial-gradient(50rem 36rem at 104% 34%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 66%),
+    radial-gradient(54rem 38rem at -8% 104%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 66%);
 }
 .dark body::after {
   background:
-    radial-gradient(60rem 38rem at 8% -8%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 62%),
-    radial-gradient(46rem 34rem at 100% 40%, color-mix(in srgb, #3b82f6 10%, transparent), transparent 66%),
-    radial-gradient(52rem 36rem at -6% 100%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 65%);
+    radial-gradient(62rem 40rem at 6% -10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 62%),
+    radial-gradient(50rem 36rem at 104% 34%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 66%),
+    radial-gradient(54rem 38rem at -8% 104%, color-mix(in srgb, #4f46e5 20%, transparent), transparent 66%);
 }
+
 /* soft-edged band instead of a hard colour block between sections */
-.band { background: linear-gradient(180deg, transparent 0, color-mix(in srgb, var(--bg-2) 85%, transparent) 9rem, color-mix(in srgb, var(--bg-2) 85%, transparent) calc(100% - 9rem), transparent 100%); }
-/* card surfaces let the ambient colour breathe through */
-.bg-card { background-color: color-mix(in srgb, var(--card) 88%, transparent); }
+.band { background: linear-gradient(180deg, transparent 0, color-mix(in srgb, var(--bg-2) 88%, transparent) 9rem, color-mix(in srgb, var(--bg-2) 88%, transparent) calc(100% - 9rem), transparent 100%); }
+/* card surfaces let the colour field breathe through */
+.bg-card { background-color: color-mix(in srgb, var(--card) 86%, transparent); }
 @supports (backdrop-filter: blur(1px)) { .bg-card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } }
 
 .mono { font-family: var(--font-mono); }
 .label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-.wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
-@media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
-.section { padding-block: 5rem; }
+.grad-text { background: linear-gradient(100deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* notched iOS / Android cutouts: keep content inside the safe area */
+.wrap {
+  width: 100%; max-width: 72rem; margin-inline: auto;
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .wrap { padding-left: max(2.5rem, env(safe-area-inset-left)); padding-right: max(2.5rem, env(safe-area-inset-right)); }
+}
+footer { padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
+.section { position: relative; overflow-x: clip; padding-block: 5rem; }
 @media (min-width: 768px) { .section { padding-block: 8rem; } }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   min-height: 3rem; padding: 0 1.4rem; border-radius: 999px;
   font-weight: 600; font-size: .95rem; border: 1.5px solid var(--ink);
-  transition: transform .2s, background .2s, color .2s;
+  transition: transform .2s, background .2s, color .2s, box-shadow .2s;
 }
 .btn:hover { transform: translateY(-2px); }
-.btn-solid { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn-solid {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: var(--accent-ink); border-color: transparent;
+  box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.btn-solid:hover { box-shadow: 0 14px 38px -8px color-mix(in srgb, var(--accent-2) 75%, transparent); }
 .btn-ghost:hover { background: var(--ink); color: var(--bg); }
 
 .chip {
   font-family: var(--font-mono); font-size: .72rem; padding: .3rem .65rem;
   border: 1px solid var(--line); border-radius: 6px; background: var(--card);
-  white-space: nowrap;
+  white-space: nowrap; transition: border-color .2s, transform .2s;
 }
+.chip:hover { border-color: var(--accent); transform: translateY(-2px); }
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 3px;
 }
+
+/* ---------- real CSS 3D: no WebGL, no extra bundle ---------- */
+.cube { --s: 80px; position: relative; width: var(--s); height: var(--s); transform-style: preserve-3d; animation: spin3d 26s linear infinite; }
+.cube > i { position: absolute; inset: 0; border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, transparent), color-mix(in srgb, var(--accent-2) 8%, transparent)); }
+.cube > i:nth-child(1) { transform: translateZ(calc(var(--s) / 2)); }
+.cube > i:nth-child(2) { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
+.cube > i:nth-child(3) { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
+.cube > i:nth-child(4) { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); }
+.cube > i:nth-child(5) { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
+.cube > i:nth-child(6) { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); }
+.gyro { --s: 120px; position: relative; width: var(--s); height: var(--s); transform-style: preserve-3d; animation: spin3d 18s linear infinite reverse; }
+.gyro > i { position: absolute; inset: 0; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent-2) 70%, transparent); }
+.gyro > i:nth-child(2) { transform: rotateY(60deg); border-color: color-mix(in srgb, var(--accent) 75%, transparent); }
+.gyro > i:nth-child(3) { transform: rotateY(120deg); }
+.gyro > i:nth-child(4) { inset: 30%; background: radial-gradient(circle, var(--accent), transparent 70%); border: 0; opacity: .6; }
+@keyframes spin3d { from { transform: rotateX(-22deg) rotateY(0deg); } to { transform: rotateX(338deg) rotateY(360deg); } }
+@keyframes sway { 0%, 100% { transform: rotateZ(-5deg); } 50% { transform: rotateZ(5deg); } }
+@keyframes travel { from { left: 0; } to { left: 100%; } }
+
 .marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-  .marquee { animation: none; }
+  .marquee, .cube, .gyro, .sway, .travel { animation: none !important; }
   html { scroll-behavior: auto; }
 }

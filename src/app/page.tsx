@@ -6,7 +6,7 @@ import Contact from "@/components/Contact";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import { About, AchievementsSection, ExperienceSection, ProjectsSection, SkillsSection } from "@/components/Sections";
-import { ScrollProgress } from "@/components/ui";
+import { Divider, ScrollProgress } from "@/components/ui";
 import { profile } from "@/lib/data";
 
 export default function Home() {
@@ -19,10 +19,15 @@ export default function Home() {
       <main>
         <Hero />
         <About />
+        <Divider />
         <ExperienceSection />
+        <Divider />
         <ProjectsSection />
+        <Divider />
         <SkillsSection />
+        <Divider />
         <AchievementsSection />
+        <Divider />
         <Contact />
       </main>
       <footer className="border-t border-line py-8">

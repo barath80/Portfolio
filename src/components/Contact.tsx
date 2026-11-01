@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { profile } from "@/lib/data";
-import { Arrow, Reveal, SectionHead } from "./ui";
+import { Arrow, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -50,6 +50,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section">
+      <FloatShape kind="gyro" size={110} className="left-[-10px] top-28 !opacity-40 sm:left-[5%] sm:!opacity-60 md:top-36" />
       <div className="wrap">
         <SectionHead index="06" kicker="Contact" title="Let's build something." />
         <div className="grid gap-10 lg:grid-cols-5 lg:gap-14">
@@ -81,7 +82,7 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-3">
-            <form onSubmit={submit} className="space-y-4 rounded-3xl border border-line bg-card p-5 sm:p-8">
+            <Tilt max={2} className="rounded-3xl"><form onSubmit={submit} className="space-y-4 rounded-3xl border border-line bg-card p-5 sm:p-8">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
                   <span className="label mb-2 block">Your name</span>
@@ -114,7 +115,7 @@ export default function Contact() {
                   </span>
                 )}
               </p>
-            </form>
+            </form></Tilt>
           </Reveal>
         </div>
       </div>
