@@ -36,7 +36,7 @@ export function About() {
             </p>
           </Reveal>
           <Reveal delay={0.1} className="md:col-span-2">
-            <Tilt max={7} className="rounded-2xl"><div className="rounded-2xl border border-line bg-card p-6">
+            <Tilt max={7} className="rounded-2xl"><div className="rounded-2xl gcard border border-line bg-card p-6">
               <p className="label mb-4">Education</p>
               <p className="text-xl font-bold leading-snug">{profile.education.school}</p>
               <p className="mt-1 text-mute">{profile.education.degree}</p>
@@ -70,15 +70,22 @@ export function ExperienceSection() {
             <li key={e.company} className="relative pb-12 last:pb-0">
               <span className="absolute -left-[31px] top-2 h-3 w-3 rounded-full border-2 border-accent bg-bg shadow-[0_0_14px_var(--accent)] md:-left-[47px]" />
               <Reveal delay={i * 0.05} x={i % 2 ? 40 : -40}>
-                <div className="rounded-2xl border border-line bg-card p-5 transition hover:border-accent md:p-8">
-                  <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
-                    <h3 className="text-2xl font-extrabold tracking-tight md:text-3xl">{e.company}</h3>
-                    <span className="mono text-xs text-mute">{e.period}</span>
+                <Tilt max={2.5} className="rounded-2xl">
+                <div className="gcard rounded-2xl border border-line bg-card p-5 md:p-8">
+                  <div className="flex items-start gap-4">
+                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent2 text-base font-extrabold text-accent-ink md:h-14 md:w-14 md:text-lg">
+                      {e.company.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                        <h3 className="text-2xl font-extrabold tracking-tight md:text-3xl">{e.company}</h3>
+                        <span className="mono w-fit rounded-full border border-line bg-bg px-3 py-1 text-xs text-mute">{e.period}</span>
+                      </div>
+                      <p className="mt-1 text-mute">
+                        <span className="font-semibold text-ink">{e.role}</span> · {e.place}
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-1 flex flex-wrap gap-x-3 text-mute">
-                    <span className="font-semibold text-ink">{e.role}</span>
-                    <span>· {e.place}</span>
-                  </p>
                   <ul className="mt-5 space-y-3">
                     {e.points.map((p) => (
                       <li key={p} className="flex gap-3 leading-relaxed">
@@ -88,6 +95,7 @@ export function ExperienceSection() {
                     ))}
                   </ul>
                 </div>
+                </Tilt>
               </Reveal>
             </li>
           ))}
@@ -107,7 +115,7 @@ export function ProjectsSection() {
           {projects.map((p) => (
             <Reveal key={p.id}>
               <Tilt max={2.5} className="rounded-3xl">
-              <article className="group relative overflow-hidden rounded-3xl border border-line bg-card p-5 transition hover:border-accent sm:p-8 md:p-10">
+              <article className="group relative overflow-hidden rounded-3xl gcard border border-line bg-card p-5 transition hover:border-accent sm:p-8 md:p-10">
                 <span className="mono pointer-events-none absolute right-5 top-3 text-6xl font-extrabold text-line transition group-hover:text-accent/40 md:text-8xl lg:hidden">
                   {p.id}
                 </span>
@@ -189,7 +197,7 @@ export function SkillsSection() {
                 href={c.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col rounded-2xl border border-line bg-card p-6 transition hover:-translate-y-1 hover:border-accent"
+                className="group flex h-full flex-col rounded-2xl gcard border border-line bg-card p-6 transition hover:-translate-y-1 hover:border-accent"
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold">{c.platform}</span>

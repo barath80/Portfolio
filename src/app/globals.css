@@ -2,26 +2,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #f5f2fc;
-  --bg-2: #ebe6f8;
+  --bg: #f4f3fd;
+  --bg-2: #e9e8f9;
   --card: #ffffff;
-  --ink: #170f33;
-  --mute: #5e5780;
-  --line: #d9d1f0;
-  --accent: #7c3aed;
-  --accent-2: #c026d3;
+  --ink: #12123a;
+  --mute: #585b86;
+  --line: #d6d8f2;
+  --accent: #6d3df0;
+  --accent-2: #2563eb;
   --accent-ink: #ffffff;
 }
 .dark {
-  --bg: #08050f;
-  --bg-2: #0f0a1d;
-  --card: #120c24;
-  --ink: #efeaff;
-  --mute: #a398c6;
-  --line: #2a2048;
-  --accent: #a07bff;
-  --accent-2: #e879f9;
-  --accent-ink: #0a0615;
+  --bg: #04061a;
+  --bg-2: #080c2b;
+  --card: #0b1034;
+  --ink: #eceeff;
+  --mute: #98a2d6;
+  --line: #1b2352;
+  --accent: #9a7dff;
+  --accent-2: #4f9bff;
+  --accent-ink: #060826;
 }
 
 @theme inline {
@@ -73,9 +73,9 @@ body::after {
 }
 .dark body::after {
   background:
-    radial-gradient(62rem 40rem at 6% -10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 62%),
-    radial-gradient(50rem 36rem at 104% 34%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 66%),
-    radial-gradient(54rem 38rem at -8% 104%, color-mix(in srgb, #4f46e5 20%, transparent), transparent 66%);
+    radial-gradient(62rem 40rem at 6% -10%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%),
+    radial-gradient(50rem 36rem at 104% 34%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 66%),
+    radial-gradient(54rem 38rem at -8% 104%, color-mix(in srgb, #4338ca 22%, transparent), transparent 66%);
 }
 
 /* soft-edged band instead of a hard colour block between sections */
@@ -150,3 +150,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .marquee, .cube, .gyro, .sway, .travel { animation: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* aurora: slow-drifting blurred colour blobs behind everything */
+.aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+.aurora span { position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%; filter: blur(100px); opacity: .28; animation: drift 24s ease-in-out infinite alternate; }
+.dark .aurora span { opacity: .34; }
+.aurora span:nth-child(1) { background: var(--accent); top: -14vmax; left: -10vmax; }
+.aurora span:nth-child(2) { background: var(--accent-2); bottom: -18vmax; right: -12vmax; animation-duration: 30s; animation-delay: -8s; }
+.aurora span:nth-child(3) { background: #7c3aed; top: 38vh; left: 42vw; width: 30vmax; height: 30vmax; opacity: .16; animation-duration: 36s; }
+@keyframes drift { to { transform: translate3d(9vmax, 7vmax, 0) scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .aurora span { animation: none; } }
+
+/* gradient hairline border that brightens on hover */
+.gcard { position: relative; }
+.gcard::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 70%, transparent), transparent 38%, transparent 62%, color-mix(in srgb, var(--accent-2) 60%, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .55; transition: opacity .3s;
+}
+.gcard:hover::before { opacity: 1; }
+.dark .gcard { box-shadow: 0 30px 60px -40px color-mix(in srgb, var(--accent) 45%, transparent); }

@@ -23,8 +23,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f2fc" },
-    { media: "(prefers-color-scheme: dark)", color: "#08050f" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f3fd" },
+    { media: "(prefers-color-scheme: dark)", color: "#04061a" },
   ],
 };
 
@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${display.variable} ${mono.variable}`}>
       <body>
+        <div className="aurora" aria-hidden><span /><span /><span /></div>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

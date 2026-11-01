@@ -82,7 +82,7 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-3">
-            <Tilt max={2} className="rounded-3xl"><form onSubmit={submit} className="space-y-4 rounded-3xl border border-line bg-card p-5 sm:p-8">
+            <Tilt max={2} className="rounded-3xl"><form onSubmit={submit} className="gcard space-y-4 rounded-3xl border border-line bg-card p-5 sm:p-8">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
                   <span className="label mb-2 block">Your name</span>
