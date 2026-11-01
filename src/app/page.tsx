@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CommandPalette from "@/components/CommandPalette";
+import { Cursor, Preloader, SmoothScroll } from "@/components/Interactions";
 import Contact from "@/components/Contact";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -13,6 +14,9 @@ export default function Home() {
   const [palette, setPalette] = useState(false);
   return (
     <>
+      <Preloader />
+      <SmoothScroll />
+      <Cursor />
       <ScrollProgress />
       <Header onPalette={() => setPalette(true)} />
       <CommandPalette open={palette} setOpen={setPalette} />

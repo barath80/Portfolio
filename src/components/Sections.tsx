@@ -1,6 +1,9 @@
 "use client";
 
-import { achievements, competitive, experience, profile, projects, skills } from "@/lib/data";
+import { achievements, competitive, experience, profile, projectFilters, projects, skills } from "@/lib/data";
+import { useState } from "react";
+import { Magnetic } from "./Interactions";
+import { GithubRepos, SkillsExplorer } from "./Showcase";
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Arrow, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
@@ -106,13 +109,30 @@ export function ExperienceSection() {
 }
 
 export function ProjectsSection() {
+  const [filter, setFilter] = useState("All");
+  const list = filter === "All" ? projects : projects.filter((p) => p.tags.includes(filter));
   return (
     <section id="projects" className="section band">
       <FloatShape kind="cube" size={96} className="left-[-18px] top-20 !opacity-40 sm:left-[4%] sm:!opacity-70 md:top-28" />
       <div className="wrap">
         <SectionHead index="03" kicker="Selected work" title="Projects with receipts." />
-        <div className="space-y-6">
-          {projects.map((p) => (
+        <div role="tablist" aria-label="Filter projects" className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
+          {projectFilters.map((f) => (
+            <button
+              key={f}
+              role="tab"
+              aria-selected={filter === f}
+              onClick={() => setFilter(f)}
+              className={`mono shrink-0 rounded-full border px-4 py-2.5 text-xs transition ${
+                filter === f ? "border-transparent bg-gradient-to-r from-accent to-accent2 font-bold text-accent-ink" : "border-line bg-card text-mute hover:border-accent hover:text-ink"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <div className="space-y-6" key={filter}>
+          {list.map((p) => (
             <Reveal key={p.id}>
               <Tilt max={2.5} className="rounded-3xl">
               <article className="group relative overflow-hidden rounded-3xl gcard border border-line bg-card p-5 transition hover:border-accent sm:p-8 md:p-10">
@@ -154,7 +174,7 @@ export function ProjectsSection() {
                         <span key={s} className="chip">{s}</span>
                       ))}
                     </div>
-                    <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn btn-ghost mt-8 w-full sm:w-auto" aria-label={`${p.name} on GitHub`}>
+                    <a href={p.repo} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" className="btn btn-ghost mt-8 w-full sm:w-auto" aria-label={`${p.name} on GitHub`}>
                       View on GitHub <Arrow />
                     </a>
                   </div>
@@ -175,18 +195,7 @@ export function SkillsSection() {
       <FloatShape kind="gyro" size={120} className="right-2 top-28 !opacity-40 sm:right-[6%] sm:!opacity-70 md:top-36" />
       <div className="wrap">
         <SectionHead index="04" kicker="Toolkit" title="Stack & problem-solving." />
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
-          {skills.map((g, i) => (
-            <Reveal key={g.group} delay={(i % 2) * 0.05} className={`bg-card p-6 ${i === skills.length - 1 && skills.length % 2 ? "md:col-span-2" : ""}`}>
-              <p className="label mb-4 !text-accent">{g.group}</p>
-              <div className="flex flex-wrap gap-2">
-                {g.items.map((s) => (
-                  <span key={s} className="chip !whitespace-normal">{s}</span>
-                ))}
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <SkillsExplorer />
 
         <h3 className="label mb-5 mt-20">Competitive programming</h3>
         <div className="grid gap-4 md:grid-cols-3">
@@ -195,6 +204,7 @@ export function SkillsSection() {
               <Tilt max={9} className="h-full rounded-2xl">
               <a
                 href={c.url}
+                data-cursor="OPEN"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex h-full flex-col rounded-2xl gcard border border-line bg-card p-6 transition hover:-translate-y-1 hover:border-accent"
@@ -240,6 +250,7 @@ export function AchievementsSection() {
             </Reveal>
           ))}
         </div>
+        <GithubRepos user="barath80" />
       </div>
     </section>
   );

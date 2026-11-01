@@ -3,6 +3,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { navItems, profile } from "@/lib/data";
+import { lockScroll } from "@/lib/scroll";
+import { Magnetic } from "./Interactions";
 import { ThemeToggle } from "./ui";
 
 export default function Header({ onPalette }: { onPalette: () => void }) {
@@ -29,7 +31,8 @@ export default function Header({ onPalette }: { onPalette: () => void }) {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    lockScroll(open);
+    return () => lockScroll(false);
   }, [open]);
 
   return (
@@ -66,9 +69,9 @@ export default function Header({ onPalette }: { onPalette: () => void }) {
           >
             Search <kbd className="rounded border border-line px-1.5 py-0.5">Ctrl K</kbd>
           </button>
-          <a href={profile.resume} download className="btn btn-solid !min-h-11 !px-4 text-sm">
+          <Magnetic><a href={profile.resume} download className="btn btn-solid !min-h-11 !px-4 text-sm" data-cursor="GET">
             Resume
-          </a>
+          </a></Magnetic>
           <ThemeToggle />
           <button
             className="grid h-11 w-11 place-items-center rounded-full border border-line bg-card lg:hidden"

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { navItems, profile, projects } from "@/lib/data";
+import { scrollToId } from "@/lib/scroll";
 
 type Cmd = { label: string; hint: string; run: () => void };
 
@@ -14,7 +15,7 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
   const input = useRef<HTMLInputElement>(null);
 
   const cmds = useMemo<Cmd[]>(() => {
-    const go = (id: string) => () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const go = (id: string) => () => scrollToId(id);
     const ext = (u: string) => () => window.open(u, "_blank", "noopener,noreferrer");
     return [
       ...navItems.map((n) => ({ label: `Go to ${n.label}`, hint: "Section", run: go(n.id) })),

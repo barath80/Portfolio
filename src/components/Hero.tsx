@@ -3,7 +3,8 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/lib/data";
-import Scene3D from "./Scene3D";
+import { Magnetic, useIntroDone } from "./Interactions";
+import HeroVisual from "./three/HeroVisual";
 
 const stats = [
   { v: 3, s: "", l: "internships" },
@@ -73,7 +74,32 @@ function CursorBox({ host }: { host: React.RefObject<HTMLElement | null> }) {
   );
 }
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
+/** Letter-by-letter mask reveal. `gradient` spreads one gradient across the whole word. */
+function Chars({ text, start, gradient = false }: { text: string; start: boolean; gradient?: boolean }) {
+  const n = text.length;
+  return (
+    <span aria-hidden className="inline-block whitespace-nowrap">
+      {text.split("").map((c, i) => (
+        <span key={i} className="inline-block overflow-hidden pb-[0.14em] align-bottom [margin-bottom:-0.14em]">
+          <motion.span
+            className={`inline-block ${gradient ? "grad-text" : ""}`}
+            style={gradient ? { backgroundSize: `${n * 100}% 100%`, backgroundPosition: `${(i / Math.max(n - 1, 1)) * 100}% 0` } : undefined}
+            initial={{ y: "115%", rotate: 8 }}
+            animate={start ? { y: "0%", rotate: 0 } : { y: "115%", rotate: 8 }}
+            transition={{ duration: 0.9, delay: i * 0.04, ease }}
+          >
+            {c}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function Hero() {
+  const start = useIntroDone();
   const host = useRef<HTMLElement>(null);
   const [role, setRole] = useState(0);
   useEffect(() => {
@@ -87,7 +113,7 @@ export default function Hero() {
       <div className="wrap relative">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={start ? { opacity: 1, y: 0 } : {}}
           className="mono mb-12 flex w-fit max-w-full items-center gap-2.5 rounded-xl border border-line bg-card px-3.5 py-2 text-xs sm:mb-14"
         >
           <span className="relative flex h-2 w-2">
@@ -98,21 +124,16 @@ export default function Hero() {
         </motion.p>
 
         <div className="relative inline-block max-w-full">
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(3rem,13vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.045em]"
-          >
-            Sunkireddy
+          <h1 aria-label="Sunkireddy Barath" className="text-[clamp(3rem,13vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.045em]">
+            <Chars text="Sunkireddy" start={start} />
             <br />
-            <span className="grad-text">Barath</span>
-          </motion.h1>
+            <Chars text="Barath" start={start} gradient />
+          </h1>
           {/* static detection frame around the name */}
           <motion.div
             aria-hidden
             initial={{ opacity: 0, scale: 1.06 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={start ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.9, duration: 0.6 }}
             className="pointer-events-none absolute -inset-2 border border-dashed border-accent/70 sm:-inset-4"
           >
@@ -122,7 +143,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-10 max-w-2xl">
+        <motion.div initial={{ opacity: 0 }} animate={start ? { opacity: 1 } : {}} transition={{ delay: 0.5 }} className="mt-10 max-w-2xl">
           <p className="text-xl font-medium leading-snug sm:text-2xl md:text-3xl">
             I build
             {/* all roles share one grid cell so the line never jumps; own line avoids a gap on phones */}
@@ -148,15 +169,13 @@ export default function Hero() {
           </p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href={profile.resume} download className="btn btn-solid">
-            Download resume
-          </a>
-          <a href="#projects" className="btn btn-ghost">See my work</a>
-          <a href="#contact" className="btn btn-ghost">Hire me</a>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={start ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.7 }} className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Magnetic className="sm:w-auto"><a href={profile.resume} download className="btn btn-solid w-full" data-cursor="GET">Download resume</a></Magnetic>
+          <Magnetic className="sm:w-auto"><a href="#projects" className="btn btn-ghost w-full" data-cursor="VIEW">View my work</a></Magnetic>
+          <Magnetic className="sm:w-auto"><a href="#contact" className="btn btn-ghost w-full">Contact me</a></Magnetic>
         </motion.div>
 
-        <Scene3D className="relative mx-auto mt-12 h-[300px] w-full max-w-sm xl:absolute xl:right-0 xl:top-16 xl:mt-0 xl:h-[500px] xl:w-[420px] xl:max-w-none" />
+        <HeroVisual className="relative mx-auto mt-12 h-[300px] w-full max-w-sm xl:absolute xl:right-0 xl:top-16 xl:mt-0 xl:h-[500px] xl:w-[420px] xl:max-w-none" />
 
         <dl className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-4">
           {stats.map((s) => (

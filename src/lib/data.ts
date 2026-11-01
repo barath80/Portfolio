@@ -62,6 +62,7 @@ export type Project = {
   tagline: string;
   repo: string;
   stack: string[];
+  tags: string[];
   headline: { value: string; label: string }[];
   points: string[];
 };
@@ -70,6 +71,7 @@ export const projects: Project[] = [
   {
     id: "01",
     name: "UrbanTrace AI",
+    tags: ["Computer Vision", "Machine Learning"],
     tagline: "ANPR Tracking and City Traffic Analytics",
     repo: "https://github.com/barath80/UrbanTrace-AI",
     stack: ["YOLO11m", "ByteTrack", "ONNX", "OpenCV", "FastAPI", "PostGIS"],
@@ -86,6 +88,7 @@ export const projects: Project[] = [
   {
     id: "02",
     name: "AgriSmart",
+    tags: ["Machine Learning", "Computer Vision"],
     tagline: "AI/ML-Powered Smart Agriculture Platform",
     repo: "https://github.com/barath80/AgriSmart",
     stack: ["FastAPI", "XGBoost", "MobileNetV3", "ONNX", "React Native"],
@@ -102,6 +105,7 @@ export const projects: Project[] = [
   {
     id: "03",
     name: "SentinelOps AI",
+    tags: ["Machine Learning", "Backend"],
     tagline: "Cloud Incident Detection and Recovery",
     repo: "https://github.com/barath80/SentinelOps-AI",
     stack: ["FastAPI", "PostgreSQL", "Scikit-learn", "Next.js", "Docker", "Render", "Neon"],
@@ -118,6 +122,7 @@ export const projects: Project[] = [
   {
     id: "04",
     name: "Contexta",
+    tags: ["Agentic AI", "Generative AI", "Backend"],
     tagline: "Autonomous AI Threat Intelligence Platform",
     repo: "https://github.com/barath80/Contexta",
     stack: ["FastAPI", "Next.js", "PostgreSQL", "Gemini", "NetworkX", "Redis", "Docker"],
@@ -134,6 +139,7 @@ export const projects: Project[] = [
   {
     id: "05",
     name: "VERITAS",
+    tags: ["Generative AI", "Machine Learning"],
     tagline: "Verified Evolving Reality and Intelligence Tracking",
     repo: "https://github.com/barath80/VERITAS",
     stack: ["PyTorch", "FastAPI", "RAG", "BM25", "Kafka", "SQLite", "React"],
@@ -148,6 +154,8 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export const projectFilters = ["All", "Computer Vision", "Machine Learning", "Generative AI", "Agentic AI", "Backend"];
 
 export const skills: { group: string; items: string[] }[] = [
   { group: "Programming Languages", items: ["C", "C++", "Python", "Java", "JavaScript", "TypeScript", "SQL"] },
