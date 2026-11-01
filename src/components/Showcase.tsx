@@ -24,6 +24,8 @@ const icons: Record<string, string> = {
 };
 // these logos are black, so they are inverted on the dark theme
 const darkLogos = new Set(["Express.js", "Flask", "Next.js", "GitHub"]);
+// multi-colour logos with dark parts: keep their colours, sit them on a light backing in dark mode
+const lightBacked = new Set(["Pandas", "Java", "Jenkins", "Bootstrap", "Pytest"]);
 
 function TechTile({ name }: { name: string }) {
   const [broken, setBroken] = useState(false);
@@ -31,7 +33,7 @@ function TechTile({ name }: { name: string }) {
   const mono = name.replace(/[^A-Za-z0-9+]/g, "").slice(0, 2);
   return (
     <span className="tech group inline-flex items-center gap-2.5 rounded-xl border border-line bg-bg/60 py-1.5 pl-1.5 pr-3.5 text-[13px] font-medium transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_8px_24px_-10px_var(--accent)]">
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-card transition group-hover:border-accent">
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-card transition group-hover:border-accent ${lightBacked.has(name) ? "dark:!bg-white/90" : ""}`}>
         {file && !broken ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={`${DEVICON}/${file}.svg`} alt="" width={20} height={20} loading="lazy" decoding="async" onError={() => setBroken(true)} className={`h-5 w-5 ${darkLogos.has(name) ? "dark:invert" : ""}`} />
