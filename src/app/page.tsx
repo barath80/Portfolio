@@ -34,10 +34,17 @@ export default function Home() {
         <Divider />
         <Depth><Contact /></Depth>
       </main>
-      <footer className="border-t border-line py-8">
-        <div className="wrap flex flex-col items-center justify-between gap-3 text-sm text-mute sm:flex-row">
+      <footer className="border-t border-line py-10">
+        <div className="wrap flex flex-col gap-6 text-sm text-mute md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} {profile.name}</p>
-          <p className="mono text-xs">Built with Next.js · Tailwind · Framer Motion</p>
+          <nav aria-label="Footer" className="mono flex flex-wrap gap-x-6 gap-y-3 text-xs">
+            <a className="transition hover:text-ink" href={`mailto:${profile.email}`}>Email</a>
+            <a className="transition hover:text-ink" href={`tel:+91${profile.phone}`}>Call</a>
+            <a className="transition hover:text-ink" href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a className="transition hover:text-ink" href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a className="transition hover:text-ink" href={profile.resume} download>Resume</a>
+            <a className="transition hover:text-ink" href="#top">Back to top</a>
+          </nav>
         </div>
       </footer>
     </>

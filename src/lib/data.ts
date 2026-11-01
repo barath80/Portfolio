@@ -194,11 +194,11 @@ export const competitive = [
   },
 ];
 
-export const achievements = [
-  { date: "Feb 2026", title: "BeachHack National Hackathon'26", result: "2nd Runner-Up", detail: "Christ University · Built Contexta", prize: "Rs. 20,000" },
+export const achievements: { date: string; title: string; result: string; detail: string; prize: string; link?: string; linkLabel?: string }[] = [
+  { date: "Feb 2026", title: "BeachHack National Hackathon'26", result: "2nd Runner-Up", detail: "Christ University · Built Contexta", prize: "Rs. 20,000", link: "https://github.com/barath80/Contexta", linkLabel: "Contexta on GitHub" },
   { date: "Jan 2026", title: "QIE International Blockchain Hackathon'26", result: "Winner", detail: "Built NeuroCred, an on-chain credit passport", prize: "$2500 USD" },
-  { date: "Nov 2025", title: "Hack Karnataka (GDG)'25", result: "Finalist", detail: "Developed AgriSmart AI · Top 2 track ranking among 3,000+ teams nationwide", prize: "Top 2 track" },
-  { date: "Nov 2025", title: "Cardano Hackathon Asia IBW Edition'25", result: "Winner", detail: "Built Lendora AI, a DeFi platform · 5,000+ teams", prize: "$2000" },
+  { date: "Nov 2025", title: "Hack Karnataka (GDG)'25", result: "Finalist", detail: "Developed AgriSmart AI · Top 2 track ranking among 3,000+ teams nationwide", prize: "Top 2 track", link: "https://github.com/barath80/AgriSmart", linkLabel: "AgriSmart on GitHub" },
+  { date: "Nov 2025", title: "Cardano Hackathon Asia IBW Edition'25", result: "Winner", detail: "Built Lendora AI, a DeFi platform · 5,000+ teams", prize: "$2000", link: "https://github.com/barath80/Lendora-AI", linkLabel: "Lendora AI on GitHub" },
 ];
 
 export const navItems = [

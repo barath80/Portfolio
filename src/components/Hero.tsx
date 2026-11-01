@@ -14,49 +14,6 @@ const stats = [
   { v: 1000, s: "+", l: "LeetCode solved" },
 ];
 
-/** A detector-style box that trails the cursor — a nod to the ANPR/YOLO work. */
-function CursorBox({ host }: { host: React.RefObject<HTMLElement | null> }) {
-  const x = useMotionValue(-200);
-  const y = useMotionValue(-200);
-  const sx = useSpring(x, { stiffness: 220, damping: 24 });
-  const sy = useSpring(y, { stiffness: 220, damping: 24 });
-  const [on, setOn] = useState(false);
-  const [fine, setFine] = useState(false);
-
-  useEffect(() => {
-    setFine(window.matchMedia("(pointer: fine)").matches);
-    const el = host.current;
-    if (!el) return;
-    const move = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      x.set(e.clientX - r.left);
-      y.set(e.clientY - r.top);
-      setOn(true);
-    };
-    const leave = () => setOn(false);
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    return () => {
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-    };
-  }, [host, x, y]);
-
-  if (!fine) return null;
-  return (
-    <motion.div
-      aria-hidden
-      style={{ x: sx, y: sy }}
-      animate={{ opacity: on ? 1 : 0 }}
-      className="pointer-events-none absolute left-0 top-0 z-10"
-    >
-      <div className="-ml-14 -mt-10 h-20 w-28 border border-accent">
-        <span className="mono absolute -top-5 left-[-1px] bg-accent px-1.5 py-0.5 text-[10px] text-accent-ink">visitor 0.97</span>
-      </div>
-    </motion.div>
-  );
-}
-
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /** Letter-by-letter mask reveal. `gradient` spreads one gradient across the whole word. */
@@ -92,38 +49,13 @@ export default function Hero() {
 
   return (
     <section id="top" ref={host} className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden pb-10 pt-28">
-      <CursorBox host={host} />
       <div className="wrap relative">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={start ? { opacity: 1, y: 0 } : {}}
-          className="mono mb-12 flex w-fit max-w-full items-center gap-2.5 rounded-xl border border-line bg-card px-3.5 py-2 text-xs sm:mb-14"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
-          Open to internships &amp; entry roles · {profile.location.split(",")[0]}
-        </motion.p>
-
         <div className="relative inline-block max-w-full">
           <h1 aria-label="Sunkireddy Barath" className="text-[clamp(3rem,13vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.045em]">
             <Chars text="Sunkireddy" start={start} />
             <br />
             <Chars text="Barath" start={start} gradient />
           </h1>
-          {/* static detection frame around the name */}
-          <motion.div
-            aria-hidden
-            initial={{ opacity: 0, scale: 1.06 }}
-            animate={start ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.9, duration: 0.6 }}
-            className="pointer-events-none absolute -inset-2 border border-dashed border-accent/70 sm:-inset-4"
-          >
-            <span className="mono absolute -top-6 left-[-1px] bg-accent px-2 py-0.5 text-[10px] text-accent-ink sm:text-xs">
-              id:07 · engineer · 0.99
-            </span>
-          </motion.div>
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={start ? { opacity: 1 } : {}} transition={{ delay: 0.5 }} className="mt-10 max-w-2xl">
@@ -157,6 +89,12 @@ export default function Hero() {
           <Magnetic className="sm:w-auto"><a href="#projects" className="btn btn-ghost w-full" data-cursor="VIEW">View my work</a></Magnetic>
           <Magnetic className="sm:w-auto"><a href="#contact" className="btn btn-ghost w-full">Contact me</a></Magnetic>
         </motion.div>
+
+        <p className="mono mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-mute">
+          <a className="underline-offset-4 transition hover:text-ink hover:underline" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a className="underline-offset-4 transition hover:text-ink hover:underline" href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a className="underline-offset-4 transition hover:text-ink hover:underline" href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        </p>
 
         <HeroVisual className="relative mx-auto mt-12 h-[300px] w-full max-w-sm xl:absolute xl:right-0 xl:top-16 xl:mt-0 xl:h-[500px] xl:w-[420px] xl:max-w-none" />
 

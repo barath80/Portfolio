@@ -5,6 +5,45 @@ import { useEffect, useState } from "react";
 import { skills } from "@/lib/data";
 import { Arrow, Reveal, Tilt } from "./ui";
 
+/* ---------- tech tiles: real logo when one exists, monogram otherwise ---------- */
+
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
+// resume name -> devicon folder/file. Anything not listed (ONNX, YOLO, RAG, ...) gets a monogram instead of a made-up logo.
+const icons: Record<string, string> = {
+  C: "c/c-original", "C++": "cplusplus/cplusplus-original", Python: "python/python-original", Java: "java/java-original",
+  JavaScript: "javascript/javascript-original", TypeScript: "typescript/typescript-original",
+  NumPy: "numpy/numpy-original", Pandas: "pandas/pandas-original", "Scikit-learn": "scikitlearn/scikitlearn-original",
+  TensorFlow: "tensorflow/tensorflow-original", PyTorch: "pytorch/pytorch-original", Keras: "keras/keras-original", OpenCV: "opencv/opencv-original",
+  "Node.js": "nodejs/nodejs-original", "Express.js": "express/express-original", Flask: "flask/flask-original", FastAPI: "fastapi/fastapi-original",
+  MySQL: "mysql/mysql-original", MongoDB: "mongodb/mongodb-original", PostgreSQL: "postgresql/postgresql-original", Redis: "redis/redis-original",
+  HTML: "html5/html5-original", CSS: "css3/css3-original", "React.js": "react/react-original", "Next.js": "nextjs/nextjs-original",
+  "Angular.js": "angularjs/angularjs-original", Bootstrap: "bootstrap/bootstrap-original", "Tailwind CSS": "tailwindcss/tailwindcss-original",
+  Figma: "figma/figma-original", Canva: "canva/canva-original",
+  Git: "git/git-original", GitHub: "github/github-original", Docker: "docker/docker-original", Jenkins: "jenkins/jenkins-original",
+  Kubernetes: "kubernetes/kubernetes-plain", "Linux (Ubuntu)": "ubuntu/ubuntu-plain", Pytest: "pytest/pytest-original",
+};
+// these logos are black, so they are inverted on the dark theme
+const darkLogos = new Set(["Express.js", "Flask", "Next.js", "GitHub"]);
+
+function TechTile({ name }: { name: string }) {
+  const [broken, setBroken] = useState(false);
+  const file = icons[name];
+  const mono = name.replace(/[^A-Za-z0-9+]/g, "").slice(0, 2);
+  return (
+    <span className="tech group inline-flex items-center gap-2.5 rounded-xl border border-line bg-bg/60 py-1.5 pl-1.5 pr-3.5 text-[13px] font-medium transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_8px_24px_-10px_var(--accent)]">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-card transition group-hover:border-accent">
+        {file && !broken ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={`${DEVICON}/${file}.svg`} alt="" width={20} height={20} loading="lazy" decoding="async" onError={() => setBroken(true)} className={`h-5 w-5 ${darkLogos.has(name) ? "dark:invert" : ""}`} />
+        ) : (
+          <span className="grad-text mono text-[11px] font-bold">{mono}</span>
+        )}
+      </span>
+      {name}
+    </span>
+  );
+}
+
 /* ---------- skills: orbit constellation + category filter ---------- */
 
 type Ring = { r: number; dur: number; groups: string[]; nodes: string[] };
@@ -104,7 +143,7 @@ export function SkillsExplorer() {
                     <p className="label mb-4 !text-accent">{g.group}</p>
                     <div className="flex flex-wrap gap-2">
                       {g.items.map((s) => (
-                        <span key={s} className="chip !whitespace-normal">{s}</span>
+                        <TechTile key={s} name={s} />
                       ))}
                     </div>
                   </div>

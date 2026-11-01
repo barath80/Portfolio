@@ -1,6 +1,6 @@
 "use client";
 
-import { achievements, competitive, experience, profile, projectFilters, projects, skills } from "@/lib/data";
+import { achievements, competitive, experience, profile, projectFilters, projects } from "@/lib/data";
 import { useState } from "react";
 import { Magnetic } from "./Interactions";
 import { GithubRepos, SkillsExplorer } from "./Showcase";
@@ -10,20 +10,9 @@ import { Arrow, CountUp, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
 import Viz from "./Viz";
 
 export function About() {
-  const loop = skills.flatMap((s) => s.items);
   return (
     <section id="about" className="section pt-10 md:pt-20">
       <FloatShape kind="gyro" size={110} className="right-3 top-40 !opacity-40 sm:right-[7%] sm:!opacity-70 md:top-48" />
-      <div className="mb-14 overflow-hidden border-y border-line py-4" aria-hidden>
-        <div className="marquee mono text-sm text-mute">
-          {[...loop, ...loop].map((s, i) => (
-            <span key={i} className="mx-5 whitespace-nowrap">
-              <span className="mr-5 inline-block h-1.5 w-1.5 bg-accent align-middle" />
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
       <div className="wrap">
         <SectionHead index="01" kicker="About" title="Engineer first. Measured always." />
         <div className="grid gap-8 md:grid-cols-5 md:gap-14">
@@ -241,6 +230,11 @@ export function AchievementsSection() {
                 <div className="md:col-span-6">
                   <h3 className="text-xl font-extrabold tracking-tight md:text-2xl">{a.title}</h3>
                   <p className="mt-1 text-sm text-mute">{a.detail}</p>
+                  {a.link && (
+                    <a href={a.link} target="_blank" rel="noopener noreferrer" data-cursor="OPEN" className="mono mt-3 inline-flex items-center gap-1.5 text-xs text-accent underline-offset-4 hover:underline">
+                      {a.linkLabel} <Arrow />
+                    </a>
+                  )}
                 </div>
                 <span className="w-fit rounded-full bg-accent px-3.5 py-1.5 text-sm font-bold text-accent-ink md:col-span-2 md:justify-self-start">
                   {a.result}
