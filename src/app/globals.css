@@ -38,11 +38,12 @@
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html { position: relative; scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 * { -webkit-tap-highlight-color: transparent; }
 input, textarea { font: inherit; font-size: 16px; } /* 16px stops iOS Safari zooming on focus */
 button { cursor: pointer; }
 body {
+  position: relative; /* Framer Motion's scroll tracking wants a positioned scroll container */
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-display);

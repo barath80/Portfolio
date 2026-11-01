@@ -242,7 +242,7 @@ export function Depth({ children }: { children: React.ReactNode }) {
   return (
     // overflow-x clip: perspective magnifies the tilted section past the viewport edge, which would otherwise widen the page
     <div className="overflow-x-clip" style={{ perspective: 1500, perspectiveOrigin: "50% 0%" }}>
-      <motion.div ref={ref} style={{ rotateX, scale, y, opacity, transformOrigin: "50% 0%" }}>
+      <motion.div ref={ref} style={{ rotateX, scale, y, opacity, transformOrigin: "50% 0%", position: "relative" }}>
         {children}
       </motion.div>
     </div>

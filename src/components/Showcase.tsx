@@ -76,8 +76,9 @@ function Constellation({ active }: { active: string }) {
             <g className="orbit" style={{ animationDuration: `${ring.dur}s`, animationDirection: ri % 2 ? "reverse" : "normal" }}>
               {ring.nodes.map((n, i) => {
                 const a = (i / ring.nodes.length) * Math.PI * 2;
-                const x = 200 + Math.cos(a) * ring.r;
-                const y = 200 + Math.sin(a) * ring.r;
+                // rounded: Node and browsers differ in the last float digit, which trips hydration
+                const x = Math.round((200 + Math.cos(a) * ring.r) * 100) / 100;
+                const y = Math.round((200 + Math.sin(a) * ring.r) * 100) / 100;
                 return (
                   <g key={n} transform={`translate(${x} ${y})`}>
                     <g className="orbit" style={{ animationDuration: `${ring.dur}s`, animationDirection: ri % 2 ? "normal" : "reverse" }}>
