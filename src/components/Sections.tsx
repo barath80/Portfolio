@@ -3,7 +3,7 @@
 import { achievements, competitive, experience, profile, projectFilters, projects } from "@/lib/data";
 import { useState } from "react";
 import { Magnetic } from "./Interactions";
-import { GithubRepos, SkillsExplorer } from "./Showcase";
+import { GithubRepos, SkillsExplorer, TechMarquee } from "./Showcase";
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Arrow, CountUp, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
@@ -12,7 +12,10 @@ import Viz from "./Viz";
 export function About() {
   return (
     <section id="about" className="section pt-10 md:pt-20">
-      <FloatShape kind="gyro" size={110} className="right-3 top-40 !opacity-40 sm:right-[7%] sm:!opacity-70 md:top-48" />
+      <FloatShape kind="gyro" size={110} className="right-3 top-[14rem] !opacity-40 sm:right-[7%] sm:!opacity-70 md:top-[19.5rem]" />
+      <div className="mb-16 md:mb-24">
+        <TechMarquee />
+      </div>
       <div className="wrap">
         <SectionHead index="01" kicker="About" title="Engineer first. Measured always." />
         <div className="grid gap-8 md:grid-cols-5 md:gap-14">

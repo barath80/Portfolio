@@ -27,7 +27,7 @@ const darkLogos = new Set(["Express.js", "Flask", "Next.js", "GitHub"]);
 // multi-colour logos with dark parts: keep their colours, sit them on a light backing in dark mode
 const lightBacked = new Set(["Pandas", "Java", "Jenkins", "Bootstrap", "Pytest"]);
 
-function TechTile({ name }: { name: string }) {
+export function TechTile({ name, eager = false }: { name: string; eager?: boolean }) {
   const [broken, setBroken] = useState(false);
   const file = icons[name];
   const mono = name.replace(/[^A-Za-z0-9+]/g, "").slice(0, 2);
@@ -36,13 +36,45 @@ function TechTile({ name }: { name: string }) {
       <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-card transition group-hover:border-accent ${lightBacked.has(name) ? "dark:!bg-white/90" : ""}`}>
         {file && !broken ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={`${DEVICON}/${file}.svg`} alt="" width={20} height={20} loading="lazy" decoding="async" onError={() => setBroken(true)} className={`h-5 w-5 ${darkLogos.has(name) ? "dark:invert" : ""}`} />
+          <img src={`${DEVICON}/${file}.svg`} alt="" width={20} height={20} loading={eager ? "eager" : "lazy"} decoding="async" onError={() => setBroken(true)} className={`h-5 w-5 ${darkLogos.has(name) ? "dark:invert" : ""}`} />
         ) : (
           <span className="grad-text mono text-[11px] font-bold">{mono}</span>
         )}
       </span>
       {name}
     </span>
+  );
+}
+
+/* ---------- scrolling stack: two rows, opposite directions ---------- */
+
+const groupItems = (...names: string[]) => skills.filter((s) => names.includes(s.group)).flatMap((s) => s.items);
+const rowA = groupItems("Programming Languages", "Machine Learning and AI", "Generative and Agentic AI");
+const rowB = groupItems("Backend and Database", "Frontend and Design", "DevOps, Cloud and Testing");
+
+function Track({ items, reverse, seconds }: { items: string[]; reverse?: boolean; seconds: number }) {
+  // the list is rendered twice and the track slides by exactly one copy (-50%), so the loop has no seam
+  const group = (hidden: boolean) => (
+    <ul className="flex shrink-0 items-center gap-3 pr-3" aria-hidden={hidden || undefined}>
+      {items.map((s) => (
+        <li key={s}><TechTile name={s} eager /></li>
+      ))}
+    </ul>
+  );
+  return (
+    <div className="tech-track flex w-max" style={{ animationDuration: `${seconds}s`, animationDirection: reverse ? "reverse" : "normal" }}>
+      {group(false)}
+      {group(true)}
+    </div>
+  );
+}
+
+export function TechMarquee() {
+  return (
+    <section aria-label="Technologies I work with" className="tech-marquee relative space-y-3 py-2">
+      <Track items={rowA} seconds={70} />
+      <Track items={rowB} seconds={80} reverse />
+    </section>
   );
 }
 
