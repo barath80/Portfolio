@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f3efe6;
+  --bg-2: #eae5d9;
+  --card: #fbf9f4;
+  --ink: #15140f;
+  --mute: #5f5b50;
+  --line: #d6d0c1;
+  --accent: #ff4b1f;
+  --accent-ink: #ffffff;
+}
+.dark {
+  --bg: #0c0c0b;
+  --bg-2: #141413;
+  --card: #121211;
+  --ink: #ecebe3;
+  --mute: #98968a;
+  --line: #262623;
+  --accent: #c8ff3a;
+  --accent-ink: #0c0c0b;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg-2);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-display: var(--font-display), ui-sans-serif, system-ui;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* film grain + grid give the page texture instead of a flat fill */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: .35;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+.mono { font-family: var(--font-mono); }
+.label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1.25rem; }
+@media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+.section { padding-block: 5rem; }
+@media (min-width: 768px) { .section { padding-block: 8rem; } }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 3rem; padding: 0 1.4rem; border-radius: 999px;
+  font-weight: 600; font-size: .95rem; border: 1.5px solid var(--ink);
+  transition: transform .2s, background .2s, color .2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-solid { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn-ghost:hover { background: var(--ink); color: var(--bg); }
+
+.chip {
+  font-family: var(--font-mono); font-size: .72rem; padding: .3rem .65rem;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--card);
+  white-space: nowrap;
+}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+.marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none; }
+  html { scroll-behavior: auto; }
+}
