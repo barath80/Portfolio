@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { navItems, profile } from "@/lib/data";
 import { lockScroll } from "@/lib/scroll";
 import { Magnetic } from "./Interactions";
-import { ThemeToggle } from "./ui";
+import { Logo, ThemeToggle } from "./ui";
 
 export default function Header({ onPalette }: { onPalette: () => void }) {
   const [open, setOpen] = useState(false);
@@ -42,8 +42,8 @@ export default function Header({ onPalette }: { onPalette: () => void }) {
       }`}
     >
       <div className="wrap flex h-16 items-center justify-between gap-3">
-        <a href="#top" aria-label="Home" className="flex items-center gap-2.5 font-extrabold tracking-tight" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent text-sm text-accent-ink">SB</span>
+        <a href="#top" aria-label="Sunkireddy Barath, home" className="logo-link flex items-center gap-2 font-extrabold tracking-tight" onClick={() => setOpen(false)}>
+          <Logo size={44} />
           <span className="hidden sm:inline">Barath</span>
         </a>
 

@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import { useEffect, useState } from "react";
 import { introSeen, lockScroll, markIntroDone, scrollToId } from "@/lib/scroll";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
+import { Logo } from "./ui";
 
 /** True once the intro has finished (or was skipped / already seen this session). */
 export function useIntroDone() {
@@ -73,8 +74,8 @@ export function Preloader() {
           initial={{ clipPath: "inset(0 0 0% 0)" }}
           transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
         >
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.7 }} className="grid h-20 w-20 place-items-center rounded-2xl bg-gradient-to-br from-accent to-accent2 text-3xl font-extrabold text-accent-ink">
-            SB
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.7 }}>
+            <Logo size={112} draw />
           </motion.div>
           <p className="mono mt-6 text-xs tracking-[.3em] text-mute">LOADING PORTFOLIO</p>
           <div className="mt-4 h-[3px] w-56 overflow-hidden rounded-full bg-line">

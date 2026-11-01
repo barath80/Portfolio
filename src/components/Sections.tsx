@@ -6,7 +6,7 @@ import { Magnetic } from "./Interactions";
 import { GithubRepos, SkillsExplorer } from "./Showcase";
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { Arrow, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
+import { Arrow, CountUp, FloatShape, Reveal, SectionHead, Tilt } from "./ui";
 import Viz from "./Viz";
 
 export function About() {
@@ -46,7 +46,7 @@ export function About() {
               <div className="mt-6 flex items-end justify-between border-t border-line pt-5">
                 <span className="mono text-sm text-mute">{profile.education.years}</span>
                 <span className="text-right">
-                  <span className="grad-text block text-4xl font-extrabold">8.78</span>
+                  <span className="grad-text block text-4xl font-extrabold"><CountUp value="8.78" /></span>
                   <span className="label">CGPA / 10</span>
                 </span>
               </div>
@@ -152,7 +152,7 @@ export function ProjectsSection() {
                     <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
                       {p.headline.map((h) => (
                         <div key={h.label} className="min-w-0 rounded-xl border border-line bg-bg p-3 sm:p-4">
-                          <p className="whitespace-nowrap text-[1.05rem] font-extrabold leading-none text-accent min-[380px]:text-xl sm:text-3xl lg:text-2xl">{h.value}</p>
+                          <p className="whitespace-nowrap text-[1.05rem] font-extrabold leading-none text-accent min-[380px]:text-xl sm:text-3xl lg:text-2xl"><CountUp value={h.value} /></p>
                           <p className="label mt-2 !text-[.62rem] !tracking-[.05em] sm:!text-[.7rem]">{h.label}</p>
                         </div>
                       ))}
@@ -214,7 +214,7 @@ export function SkillsSection() {
                   <Arrow className="text-mute transition group-hover:text-accent" />
                 </div>
                 <p className="mono text-xs text-mute">@{c.handle}</p>
-                <p className="grad-text mt-5 text-6xl font-extrabold tracking-tighter">{c.big}</p>
+                <p className="grad-text mt-5 text-6xl font-extrabold tracking-tighter"><CountUp value={c.big} /></p>
                 <p className="label mb-4">{c.bigLabel}</p>
                 <p className="mt-auto text-sm leading-relaxed text-mute">{c.text}</p>
               </a>

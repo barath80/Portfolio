@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useInView, useMotionTemplate, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useTheme } from "next-themes";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 /** Content tilts up out of the page in 3D as it scrolls into view. `x` makes it swing in from a side. */
 export function Reveal({ children, delay = 0, className, x = 0 }: { children: React.ReactNode; delay?: number; className?: string; x?: number }) {
@@ -157,3 +157,94 @@ export const Arrow = ({ className = "" }: { className?: string }) => (
     <path d="M7 17 17 7M8 7h9v9" />
   </svg>
 );
+
+
+/** Numbers count up from 1 to their real value when scrolled into view. Non-numeric values render as-is. */
+const COUNTABLE = /^[\d.,]+[%M+]?((→|\/)[\d.,]+[%M+]?)?$/;
+export function CountUp({ value, enabled = true, group = false, eager = false, className = "" }: { value: string; enabled?: boolean; group?: boolean; eager?: boolean; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  // eager: start as soon as any pixel is visible (hero stats peek above the fold)
+  const inView = useInView(ref, { once: true, margin: eager ? "0px" : "0px 0px -8% 0px" });
+  const reduce = useReducedMotion();
+  const countable = COUNTABLE.test(value);
+  const [t, setT] = useState(1); // server + no-JS render the real value; JS resets to the start state below
+  const armed = useRef(false);
+
+  useEffect(() => {
+    if (countable && !reduce) { setT(0); armed.current = true; }
+  }, [countable, reduce]);
+
+  useEffect(() => {
+    if (!armed.current || !inView || !enabled) return;
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min((now - t0) / 1900, 1);
+      setT(p === 1 ? 1 : 1 - Math.pow(2, -10 * p)); // ease-out expo
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, enabled]);
+
+  const out = value.split(/(\d[\d,]*\.?\d*)/).map((part) => {
+    if (!/^\d/.test(part)) return part;
+    const target = parseFloat(part.replace(/,/g, ""));
+    const decimals = part.split(".")[1]?.length ?? 0;
+    const from = decimals === 0 && target > 1 ? 1 : 0;
+    const cur = from + (target - from) * t;
+    return decimals ? cur.toFixed(decimals) : group ? Math.round(cur).toLocaleString("en-US") : String(Math.round(cur));
+  });
+  return <span ref={ref} className={`tabular-nums ${className}`}>{out.join("")}</span>;
+}
+
+/** SB monogram: geometric strokes on a gradient tile, with an orbit that passes in front of and behind it. */
+export function Logo({ size = 40, draw = false, className = "" }: { size?: number; draw?: boolean; className?: string }) {
+  const id = useId().replace(/:/g, "");
+  const orbit = "M2 28 a26 9 0 1 0 52 0 a26 9 0 1 0 -52 0";
+  return (
+    <svg viewBox="0 0 56 56" width={size} height={size} aria-hidden className={`logo ${draw ? "logo-draw" : ""} ${className}`}>
+      <defs>
+        <linearGradient id={`lg${id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="var(--accent)" />
+          <stop offset="1" stopColor="var(--accent-2)" />
+        </linearGradient>
+      </defs>
+      <g transform="rotate(-28 28 28)">
+        <path d={orbit} fill="none" stroke="var(--accent-2)" strokeOpacity=".45" strokeWidth="1.2" />
+      </g>
+      <rect x="9" y="9" width="38" height="38" rx="12" fill={`url(#lg${id})`} />
+      <rect x="9.6" y="9.6" width="36.8" height="36.8" rx="11.4" fill="none" stroke="#fff" strokeOpacity=".28" />
+      <g fill="none" stroke="var(--accent-ink)" strokeWidth="3.3" strokeLinecap="round" strokeLinejoin="round">
+        <path pathLength="1" className="logo-p" d="M25.6 20.4C25.6 18 23.2 17 20.9 17C18.3 17 16.5 18.6 16.5 20.8C16.5 25.2 26 24 26 30C26 33.6 23.6 35.5 20.9 35.5C18.1 35.5 16.2 34 16.1 31.4" />
+        <path pathLength="1" className="logo-p" d="M29.8 17V35.5M29.8 17H34.7C37.5 17 39 18.7 39 21.2C39 23.7 37.5 26.2 34.7 26.2H29.8M29.8 26.2H35.5C38.4 26.2 40.2 28.2 40.2 30.8C40.2 33.4 38.4 35.5 35.5 35.5H29.8" />
+      </g>
+      <g transform="rotate(-28 28 28)">
+        <path d="M2 28 a26 9 0 0 0 52 0" fill="none" stroke="var(--accent-2)" strokeWidth="1.8" strokeLinecap="round" />
+        <circle r="2.7" fill="var(--accent-2)">
+          <animateMotion dur="6s" repeatCount="indefinite" path={orbit} />
+        </circle>
+      </g>
+    </svg>
+  );
+}
+
+/** Wraps a section so it swings up out of the page in 3D as it scrolls into view. */
+export function Depth({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 35%"] });
+  const rotateX = useTransform(scrollYProgress, [0, 1], [11, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.55], [0.15, 1]);
+  if (reduce) return <>{children}</>;
+  return (
+    // overflow-x clip: perspective magnifies the tilted section past the viewport edge, which would otherwise widen the page
+    <div className="overflow-x-clip" style={{ perspective: 1500, perspectiveOrigin: "50% 0%" }}>
+      <motion.div ref={ref} style={{ rotateX, scale, y, opacity, transformOrigin: "50% 0%" }}>
+        {children}
+      </motion.div>
+    </div>
+  );
+}

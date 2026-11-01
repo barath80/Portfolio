@@ -33,7 +33,9 @@ export default function Contact() {
           _honey: d.get("_honey"),
         }),
       });
-      if (!res.ok) throw new Error();
+      const json = await res.json().catch(() => null);
+      // FormSubmit answers 200 with success:"false" until the inbox is activated, so check the body too
+      if (!res.ok || json?.success === "false" || json?.success === false) throw new Error();
       setStatus("sent");
       form.reset();
     } catch {

@@ -7,7 +7,7 @@ import Contact from "@/components/Contact";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import { About, AchievementsSection, ExperienceSection, ProjectsSection, SkillsSection } from "@/components/Sections";
-import { Divider, ScrollProgress } from "@/components/ui";
+import { Depth, Divider, ScrollProgress } from "@/components/ui";
 import { profile } from "@/lib/data";
 
 export default function Home() {
@@ -22,17 +22,17 @@ export default function Home() {
       <CommandPalette open={palette} setOpen={setPalette} />
       <main>
         <Hero />
-        <About />
+        <Depth><About /></Depth>
         <Divider />
-        <ExperienceSection />
+        <Depth><ExperienceSection /></Depth>
         <Divider />
-        <ProjectsSection />
+        <Depth><ProjectsSection /></Depth>
         <Divider />
-        <SkillsSection />
+        <Depth><SkillsSection /></Depth>
         <Divider />
-        <AchievementsSection />
+        <Depth><AchievementsSection /></Depth>
         <Divider />
-        <Contact />
+        <Depth><Contact /></Depth>
       </main>
       <footer className="border-t border-line py-8">
         <div className="wrap flex flex-col items-center justify-between gap-3 text-sm text-mute sm:flex-row">

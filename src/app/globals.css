@@ -188,3 +188,11 @@ html.lenis, html.lenis body { height: auto; }
 .orbit { transform-box: fill-box; transform-origin: center; animation: orbit 40s linear infinite; }
 @keyframes orbit { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .orbit { animation: none; } }
+
+/* logo: draw-in on the intro, 3D flip on hover */
+.logo { overflow: visible; transition: transform .9s cubic-bezier(.22, 1, .36, 1); filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--accent) 45%, transparent)); }
+.logo-link { perspective: 400px; }
+.logo-link:hover .logo { transform: rotateY(360deg); }
+.logo-draw .logo-p { stroke-dasharray: 1; stroke-dashoffset: 1; animation: logo-draw 1.1s .35s cubic-bezier(.65, 0, .35, 1) forwards; }
+@keyframes logo-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .logo-draw .logo-p { animation: none; stroke-dashoffset: 0; } .logo-link:hover .logo { transform: none; } }

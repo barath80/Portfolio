@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motio
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/lib/data";
 import { Magnetic, useIntroDone } from "./Interactions";
+import { CountUp } from "./ui";
 import HeroVisual from "./three/HeroVisual";
 
 const stats = [
@@ -12,24 +13,6 @@ const stats = [
   { v: 4, s: "", l: "hackathon podiums" },
   { v: 1000, s: "+", l: "LeetCode solved" },
 ];
-
-function Counter({ to, suffix }: { to: number; suffix: string }) {
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return setN(to);
-    const t0 = performance.now();
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min((t - t0) / 1400, 1);
-      setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [to]);
-  return <>{n.toLocaleString()}{suffix}</>;
-}
 
 /** A detector-style box that trails the cursor — a nod to the ANPR/YOLO work. */
 function CursorBox({ host }: { host: React.RefObject<HTMLElement | null> }) {
@@ -182,7 +165,7 @@ export default function Hero() {
             <div key={s.l} className="bg-card p-5 md:p-6">
               <dt className="sr-only">{s.l}</dt>
               <dd className="text-4xl font-extrabold tracking-tight md:text-5xl">
-                <Counter to={s.v} suffix={s.s} />
+                <CountUp value={`${s.v}${s.s}`} enabled={start} group eager />
               </dd>
               <p className="label mt-2 !tracking-[.08em]">{s.l}</p>
             </div>
