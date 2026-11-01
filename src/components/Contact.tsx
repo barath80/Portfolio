@@ -76,7 +76,7 @@ export default function Contact() {
             </ul>
             <p className="mono mt-5 text-xs text-mute">Based in {profile.location}</p>
             <a href={profile.resume} download className="btn btn-solid mt-6 w-full sm:w-auto">
-              Download resume (PDF) <Arrow />
+              Download resume (PDF)
             </a>
           </Reveal>
 
@@ -103,7 +103,7 @@ export default function Contact() {
               {/* honeypot: bots fill it, humans never see it */}
               <input name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
               <button type="submit" disabled={status === "sending"} className="btn btn-solid w-full disabled:opacity-60">
-                {status === "sending" ? "Sending…" : "Send message"} <Arrow />
+                {status === "sending" ? "Sending…" : "Send message"}
               </button>
               <p role="status" aria-live="polite" className="min-h-6 text-sm">
                 {status === "sent" && <span className="font-semibold text-accent">Sent. It&apos;s in my inbox and I&apos;ll reply soon.</span>}

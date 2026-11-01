@@ -91,7 +91,7 @@ export function ExperienceSection() {
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="section bg-bg2">
+    <section id="projects" className="section band">
       <div className="wrap">
         <SectionHead index="03" kicker="Selected work" title="Projects with receipts." />
         <div className="space-y-6">
@@ -197,7 +197,7 @@ export function SkillsSection() {
 
 export function AchievementsSection() {
   return (
-    <section id="achievements" className="section bg-bg2">
+    <section id="achievements" className="section band">
       <div className="wrap">
         <SectionHead index="05" kicker="Achievements" title="Built under the clock." />
         <div className="divide-y divide-line border-y border-line">

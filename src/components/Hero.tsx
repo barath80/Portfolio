@@ -3,7 +3,6 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/lib/data";
-import { Arrow } from "./ui";
 
 const stats = [
   { v: 3, s: "", l: "internships" },
@@ -126,19 +125,19 @@ export default function Hero() {
           <p className="text-xl font-medium leading-snug sm:text-2xl md:text-3xl">
             I build
             {/* all roles share one grid cell so the line never jumps; own line avoids a gap on phones */}
-            <span className="grid text-4xl leading-[1.15] sm:text-5xl md:text-6xl">
-              {profile.roles.map((r, i) => (
+            <span className="relative block h-[1.2em] overflow-hidden text-4xl leading-[1.2] sm:text-5xl md:text-6xl">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.span
-                  key={r}
-                  aria-hidden={i !== role}
-                  initial={false}
-                  animate={{ opacity: i === role ? 1 : 0, y: i === role ? 0 : 10 }}
-                  transition={{ duration: 0.35 }}
-                  className="col-start-1 row-start-1 whitespace-nowrap font-extrabold text-accent"
+                  key={role}
+                  initial={{ y: "70%", opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: "-70%", opacity: 0 }}
+                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  className="absolute inset-x-0 top-0 whitespace-nowrap font-extrabold text-accent"
                 >
-                  {r}
+                  {profile.roles[role]}
                 </motion.span>
-              ))}
+              </AnimatePresence>
             </span>
             systems that hold up past the demo.
           </p>
@@ -150,7 +149,7 @@ export default function Hero() {
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href={profile.resume} download className="btn btn-solid">
-            Download resume <Arrow />
+            Download resume
           </a>
           <a href="#projects" className="btn btn-ghost">See my work</a>
           <a href="#contact" className="btn btn-ghost">Hire me</a>
